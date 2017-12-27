@@ -65,7 +65,22 @@ If more than one host is specified, requests will be distributed to the given ho
   * Value type is <<string,string>>
   * There is no default value for this setting.
 
-If specified, prefix all memcached keys with the given string; this is useful if all keys being used by this plugin share a common prefix.
+If specified, prefix all memcached keys with the given string followed by a colon (`:`); this is useful if all keys being used by this plugin share a common prefix.
+
+EXAMPLE:
+
+In the following configuration, we would GET `fruit:banana` and `fruit:apple` from memcached:
+----
+filter {
+  memcached {
+    namespace => "fruit"
+    get {
+      "banana" => "[fruit-stats][banana]"
+      "apple"  => "[fruit-stats][apple]
+    }
+  }
+}
+----
 
 [id="plugins-{type}s-{plugin}-get"]
 ===== `get`

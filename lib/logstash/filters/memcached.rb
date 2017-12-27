@@ -39,7 +39,7 @@ class LogStash::Filters::Memcached < LogStash::Filters::Base
   #   - your.fqdn.com:11211
   config :hosts, :validate => :array, :default => ["localhost"]
 
-  # if specified, all keys will be prepended with this string
+  # if specified and non-empty, all keys will be prepended with this string and a colon (`:`)
   config :namespace, :validate => :string, :required => false
 
   # GET data from the given memcached keys to inject into the corresponding event fields.
@@ -156,7 +156,7 @@ class LogStash::Filters::Memcached < LogStash::Filters::Base
   def validate_connection_options
     {}.tap do |options|
       options[:ttl] = @ttl
-      options[:namespace] = @namespace unless @namespace.nil?
+      options[:namespace] = @namespace unless @namespace.nil? || @namespace.empty?
     end
   end
 
@@ -168,7 +168,7 @@ class LogStash::Filters::Memcached < LogStash::Filters::Base
 
   def context(hash={})
     @plugin_context ||= Hash.new.tap do |hash|
-      hash[:namespace] = @namespace unless @namespace.nil?
+      hash[:namespace] = @namespace unless @namespace.nil? or @namespace.empty?
     end
     return hash if @plugin_context.empty?
 
