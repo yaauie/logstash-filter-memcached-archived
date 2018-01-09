@@ -105,7 +105,7 @@ filter {
 ----
 
 [id="plugins-{type}s-{plugin}-set"]
-===== `get`
+===== `set`
 
   * Value type is <<hash,hash>>
   * There is no default value for this setting.
