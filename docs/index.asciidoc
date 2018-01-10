@@ -27,7 +27,7 @@ It currently provides the following facilities:
  - `set`: set values from the event to the corresponding memcached keys
 
 [id="plugins-{type}s-{plugin}-options"]
-==== Geoip Filter Configuration Options
+==== Memcached Filter Configuration Options
 
 This plugin supports the following configuration options plus the <<plugins-{type}s-{plugin}-common-options>> described later.
 
