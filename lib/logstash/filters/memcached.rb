@@ -119,8 +119,6 @@ class LogStash::Filters::Memcached < LogStash::Filters::Base
     return unless @set && !@set.empty?
 
     values_by_memcached_key = @set.each_with_object({}) do |(event_field, memcached_key_template), memo|
-      logger.trace("set: try", event_field: event_field, memcached_key_template: memcached_key_template)
-
       memcached_key = event.sprintf(memcached_key_template)
       value = event.get(event_field)
 
