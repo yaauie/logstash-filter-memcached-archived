@@ -12,14 +12,14 @@ class LogStash::Filters::Memcached < LogStash::Filters::Base
   #  - memcached with entry for `threats/hostname/example.com`
   #
   # The following config will inject the value from memcached into
-  # the nested field `[]threats][host]`:
+  # the nested field `[threats][host]`:
   #
   # filter {
   #   memcached {
   #     hosts => ["localhost:11211"]
-  #     namespace => "threats/"
+  #     namespace => "threats"
   #     get => {
-  #       "hostname/%{[hostname]}" => "[threats][host]"
+  #       "hostname:%{[hostname]}" => "[threats][host]"
   #     }
   #   }
   # }

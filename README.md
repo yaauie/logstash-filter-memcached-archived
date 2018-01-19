@@ -4,16 +4,23 @@ This is a plugin for [Logstash](https://github.com/elastic/logstash).
 
 It is fully free and fully open source. The license is Apache 2.0, meaning you are pretty much free to use it however you want in whatever way.
 
+## CAVEAT: 0.x
+
+This `logstash-filter-memcached` repository is a pre-release, 0.x, skunkwork proof-of-concept. It works, but as a 0.x release we can make no guaranees that upgrades to future versions will be trivial. The API may change within the 0.x series as we work to find the API that feels "right" for a full-featured 1.x release.
+
+The Logstash team is in the process of bringing this project (or equivalent functionality) into the [logstash-plugins fold](https://github.com/elastic/logstash/issues/8930), but the exact shape of the resulting API is still being debated.
+
 ## Documentation
 
-Logstash provides infrastructure to automatically generate documentation for this plugin. We use the asciidoc format to write documentation so any comments in the source code will be first converted into asciidoc and then into html. All plugin documentation are placed under one [central location](http://www.elastic.co/guide/en/logstash/current/).
+Logstash provides infrastructure to automatically generate documentation for this plugin from the document at [docs/index.asciidoc](). We use the asciidoc format to write documentation so any comments in the source code will be first converted into asciidoc and then into html. All plugin documentation are placed under one [central location](http://www.elastic.co/guide/en/logstash/current/).
 
 - For formatting code or config example, you can use the asciidoc `[source,ruby]` directive
 - For more asciidoc formatting tips, see the excellent reference here https://github.com/elastic/docs#asciidoc-guide
 
-## Need Help?
+## TODO:
 
-Need help? Try #logstash on freenode IRC or the https://discuss.elastic.co/c/logstash discussion forum.
+ - Automated tests that don't rely on memcached magically pre-existing on localhost:11211
+ - Better spec coverage
 
 ## Developing
 
