@@ -81,10 +81,10 @@ class LogStash::Filters::Memcached < LogStash::Filters::Base
   end # def register
 
   def filter(event)
-    do_set(event)
-    do_get(event)
+    set_success = do_set(event)
+    get_success = do_get(event)
 
-    filter_matched(event)
+    filter_matched(event) if (set_success || get_success)
   end # def filter
 
   def close
@@ -94,7 +94,7 @@ class LogStash::Filters::Memcached < LogStash::Filters::Base
   private
 
   def do_get(event)
-    return unless @get && !@get.empty?
+    return false unless @get && !@get.empty?
 
     event_fields_by_memcached_key = @get.each_with_object({}) do |(memcached_key_template, event_field), memo|
       memcached_key = event.sprintf(memcached_key_template)
@@ -104,19 +104,23 @@ class LogStash::Filters::Memcached < LogStash::Filters::Base
     memcached_keys = event_fields_by_memcached_key.keys
     cache_hits_by_memcached_key = cache.get_multi(memcached_keys)
 
+    cache_hits = 0
     event_fields_by_memcached_key.each do |memcached_key, event_field|
       value = cache_hits_by_memcached_key[memcached_key]
       if value.nil?
         logger.trace("cache:get miss", context(key: memcached_key))
       else
         logger.trace("cache:get hit", context(key: memcached_key, value: value))
+        cache_hits += 1
         event.set(event_field, value)
       end
     end
+
+    return cache_hits > 0
   end
 
   def do_set(event)
-    return unless @set && !@set.empty?
+    return false unless @set && !@set.empty?
 
     values_by_memcached_key = @set.each_with_object({}) do |(event_field, memcached_key_template), memo|
       memcached_key = event.sprintf(memcached_key_template)
@@ -125,12 +129,16 @@ class LogStash::Filters::Memcached < LogStash::Filters::Base
       memo[memcached_key] = value unless value.nil?
     end
 
+    return false if values_by_memcached_key.empty?
+
     cache.multi do
       values_by_memcached_key.each do |memcached_key, value|
         logger.trace("cache:set", context(key: memcached_key, value: value))
         cache.set(memcached_key, value)
       end
     end
+
+    return true
   end
 
   def establish_connection
