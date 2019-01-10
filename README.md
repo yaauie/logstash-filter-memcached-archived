@@ -1,3 +1,7 @@
+# ARCHIVED PROJECT
+
+This plugin has moved to [logstash-plugins/logstash-filter-memcached](logstash-plugins/logstash-filter-memcached), where is now maintained by the Logstash team.
+
 # Logstash Plugin
 
 This is a plugin for [Logstash](https://github.com/elastic/logstash).
